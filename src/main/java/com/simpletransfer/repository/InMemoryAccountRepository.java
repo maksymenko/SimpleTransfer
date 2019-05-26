@@ -9,28 +9,25 @@ public class InMemoryAccountRepository implements AccountRepository {
 
     @Override
     public Account getAccountById(String id) {
-        if (storage.containsKey(id)) {
-            return storage.get(id);
-        } else {
+        if (!storage.containsKey(id)) {
             throw new IllegalArgumentException("Account not found");
         }
+        return storage.get(id);
     }
 
     @Override
-    public Account createAccount(String name) {
-        Account account = new Account();
+    public String createAccount(Account account) {
         account.setId(UUID.randomUUID().toString());
-        account.setName(name);
-        // By default each account is initialized with 100 unit balance.
-        account.setAmount(100);
         storage.put(account.getId(), account);
 
-        return account;
+        return account.getId();
     }
 
     @Override
-    public Account updateAccount(Account account) {
+    public void updateAccount(Account account) {
+        if (!storage.containsKey(account.getId())) {
+            throw new IllegalArgumentException("Account not found");
+        }
         storage.put(account.getId(), account);
-        return account;
     }
 }

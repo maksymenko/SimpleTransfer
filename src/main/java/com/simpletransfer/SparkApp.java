@@ -8,11 +8,11 @@ import com.simpletransfer.rest.RestController;
 
 import java.util.Set;
 
-public class Application  {
+public class SparkApp {
     private Set<RestController> controllers;
 
     @Inject
-    public Application(Set<RestController> controllers) {
+    public SparkApp(Set<RestController> controllers) {
         this.controllers = controllers;
     }
 
@@ -25,6 +25,6 @@ public class Application  {
 
         Injector injector = Guice.createInjector(new SimpleTransferModule());
 
-        injector.getInstance(Application.class).start();
+        injector.getInstance(SparkApp.class).start();
     }
 }

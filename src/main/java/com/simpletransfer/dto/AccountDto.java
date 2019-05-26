@@ -1,14 +1,14 @@
-package com.simpletransfer.repository;
+package com.simpletransfer.dto;
 
-public class Account {
+public class AccountDto {
     private String id;
     private String ownerName;
     private long balance;
 
-    public Account() {
+    public AccountDto() {
     }
 
-    public Account(String id, String ownerName, long balance) {
+    public AccountDto(String id, String ownerName, long balance) {
         this.id = id;
         this.ownerName = ownerName;
         this.balance = balance;
@@ -40,7 +40,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "AccountDto{" +
                 "id='" + id + '\'' +
                 ", ownerName='" + ownerName + '\'' +
                 ", balance=" + balance +

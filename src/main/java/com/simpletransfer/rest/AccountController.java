@@ -1,13 +1,19 @@
 package com.simpletransfer.rest;
 
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
+
+import com.google.gson.Gson;
+import com.simpletransfer.dto.AccountDto;
 import com.simpletransfer.service.AccountService;
 
 import javax.inject.Inject;
 
-import static spark.Spark.get;
 
 public class AccountController implements RestController {
     private final AccountService accountService;
+    private final Gson gson = new Gson();
 
     @Inject
     public AccountController(AccountService accountService) {
@@ -15,7 +21,16 @@ public class AccountController implements RestController {
     }
 
     public void init() {
-        System.out.println(">>>>> accountController");
-        get("/account", (req, res) -> accountService.getAccount());
+        // Returns Account by id
+        get("/accounts/:id", (req, res) -> accountService.getAccountById(req.params("id")), gson::toJson);
+
+        // Creates new Account
+        post("/accounts/", (req, res) -> accountService.createAccount(gson.fromJson(req.body(), AccountDto.class)));
+
+        // update  Account
+        put("/accounts/:id", (req, res) -> {
+            accountService.updateAccount(gson.fromJson(req.body(), AccountDto.class));
+            return "OK";
+        });
     }
 }
