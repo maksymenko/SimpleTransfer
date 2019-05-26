@@ -19,6 +19,8 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.26'
 
     testCompile("junit:junit:4.12")
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
+    testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
 }
 
 jar {

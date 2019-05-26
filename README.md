@@ -28,3 +28,9 @@ java -jar ./build/libs/SimpleTransfer-0.0.1-SNAPSHOT.jar
 ```
 gradle execute  --debug-jvm
 ```
+
+
+https://github.com/despegar/spark-test
+https://javadoc.io/doc/com.sparkjava/spark-core/2.9.1
+https://www.eviltester.com/2018/04/overview-of-spark-and-testing.html
+https://github.com/eviltester/TestingApp/blob/master/java/testingapps/sparktesting/src/main/java/uk/co/compendiumdev/sparktesting/SparkStarter.java
