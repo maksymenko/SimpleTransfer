@@ -18,7 +18,6 @@ public class TransactionController implements RestController {
     }
 
     public void init() {
-        System.out.println(">>>>> transactionController");
         post("/transaction", (req, res) -> accountService.transfer(gson.fromJson(req.body(), TransactionDto.class)));
     }
 }

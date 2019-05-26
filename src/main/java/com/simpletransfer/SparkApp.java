@@ -21,8 +21,6 @@ public class SparkApp {
     }
 
     public static void main(String[] args) {
-        System.out.println(">>>> simple transfer");
-
         Injector injector = Guice.createInjector(new SimpleTransferModule());
 
         injector.getInstance(SparkApp.class).start();

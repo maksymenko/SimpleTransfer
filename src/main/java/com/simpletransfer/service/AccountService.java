@@ -2,6 +2,7 @@ package com.simpletransfer.service;
 
 import com.simpletransfer.dto.AccountDto;
 import com.simpletransfer.dto.TransactionDto;
+import com.simpletransfer.exceptions.AccountNotFoundException;
 import com.simpletransfer.repository.Account;
 import com.simpletransfer.repository.AccountRepository;
 import javax.inject.Inject;
@@ -21,7 +22,7 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public Account getAccountById(String id) {
+    public Account getAccountById(String id) throws AccountNotFoundException {
         return accountRepository.getAccountById(id);
     }
 
