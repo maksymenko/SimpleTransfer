@@ -9,7 +9,18 @@ import java.net.http.HttpResponse;
 public class RestTestUtils {
     private final static String HOST_URL = "http://localhost:4567/";
 
-    public static String post(String path, String body) throws IOException, InterruptedException {
+    public static HttpResponse<String> get(String path) throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(HOST_URL + path))
+                .header("Content-Type", "application/json")
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    public static HttpResponse<String> post(String path, String body) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -18,23 +29,18 @@ public class RestTestUtils {
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
-        HttpResponse<String> response =
-                client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        return response.body();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public static String get(String path) throws IOException, InterruptedException {
+    public static HttpResponse<String> put(String path, String body) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(HOST_URL + path))
                 .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
-        HttpResponse<String> response =
-                client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        return response.body();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }

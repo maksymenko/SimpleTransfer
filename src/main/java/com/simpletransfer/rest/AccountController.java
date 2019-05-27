@@ -1,17 +1,24 @@
 package com.simpletransfer.rest;
 
+import static spark.Spark.exception;
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
+
 import com.google.gson.Gson;
 import com.simpletransfer.dto.AccountDto;
 import com.simpletransfer.exceptions.AccountNotFoundException;
 import com.simpletransfer.exceptions.ErrorResponseDto;
 import com.simpletransfer.service.AccountService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-import static spark.Spark.*;
-
 
 public class AccountController implements RestController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
+
     private final AccountService accountService;
     private final Gson gson = new Gson();
 
@@ -25,17 +32,21 @@ public class AccountController implements RestController {
         get("/accounts/:id", (req, res) -> accountService.getAccountById(req.params("id")), gson::toJson);
 
         // Creates new Account
-        post("/accounts/", (req, res) -> accountService.createAccount(gson.fromJson(req.body(), AccountDto.class)));
+        post("/accounts/", (req, res) -> {
+            res.status(201);
+            return accountService.createAccount(gson.fromJson(req.body(), AccountDto.class));
+        }, gson::toJson);
 
         // Update  Account
         put("/accounts/:id", (req, res) -> {
-            accountService.updateAccount(gson.fromJson(req.body(), AccountDto.class));
-            return "OK";
-        });
+            res.status(202);
+            return accountService.updateAccount(req.params("id"), gson.fromJson(req.body(), AccountDto.class));
+        }, gson::toJson);
 
         // Handle error when requested account does not exist.
         exception(AccountNotFoundException.class, (exception, request, response) -> {
-            ErrorResponseDto errorResponse = new ErrorResponseDto(404, "Account not found");
+            LOGGER.error("Account not found", exception);
+            ErrorResponseDto errorResponse = new ErrorResponseDto(404, exception.getMessage());
             response.body(gson.toJson(errorResponse));
             response.status(404);
         });

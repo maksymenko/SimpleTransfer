@@ -40,10 +40,6 @@ public class AccountDto {
 
     @Override
     public String toString() {
-        return "AccountDto{" +
-                "id='" + id + '\'' +
-                ", ownerName='" + ownerName + '\'' +
-                ", balance=" + balance +
-                '}';
+        return "AccountDto{" + "id='" + id + '\'' + ", ownerName='" + ownerName + '\'' + ", balance=" + balance + '}';
     }
 }
