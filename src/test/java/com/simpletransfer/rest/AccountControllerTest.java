@@ -70,11 +70,13 @@ public class AccountControllerTest {
         AccountDto createdAccount = gson.fromJson(createAccountResponse.body(), AccountDto.class);
 
         createdAccount.setOwnerName("Another User");
+        createdAccount.setBalance(1000);
         HttpResponse<String> updateAccountResponse = RestTestUtils.put(ACCOUNT_PATH + createdAccount.getId(),
                 gson.toJson(createdAccount));
 
         assertThat(updateAccountResponse.statusCode()).isEqualTo(202);
         AccountDto updatedAccount = gson.fromJson(updateAccountResponse.body(), AccountDto.class);
         assertThat(updatedAccount.getOwnerName()).isEqualTo(createdAccount.getOwnerName());
+        assertThat(updatedAccount.getBalance()).isEqualTo(createdAccount.getBalance());
     }
 }

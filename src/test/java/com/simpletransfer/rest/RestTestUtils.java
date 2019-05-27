@@ -8,13 +8,15 @@ import java.net.http.HttpResponse;
 
 public class RestTestUtils {
     private final static String HOST_URL = "http://localhost:4567/";
+    private final static String CONTENT_TYPE = "Content-Type";
+    private final static String APPLICATION_JSON = "application/json";
 
     public static HttpResponse<String> get(String path) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(HOST_URL + path))
-                .header("Content-Type", "application/json")
+                .header(CONTENT_TYPE, APPLICATION_JSON)
                 .build();
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -25,7 +27,7 @@ public class RestTestUtils {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(HOST_URL + path))
-                .header("Content-Type", "application/json")
+                .header(CONTENT_TYPE, APPLICATION_JSON)
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
@@ -37,7 +39,7 @@ public class RestTestUtils {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(HOST_URL + path))
-                .header("Content-Type", "application/json")
+                .header(CONTENT_TYPE, APPLICATION_JSON)
                 .PUT(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
