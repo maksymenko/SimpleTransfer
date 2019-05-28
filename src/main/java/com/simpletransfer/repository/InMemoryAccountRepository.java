@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Implements account storage API in memory.
+ */
 public class InMemoryAccountRepository implements AccountRepository {
     private Map<String, Account> storage = new HashMap<>();
 

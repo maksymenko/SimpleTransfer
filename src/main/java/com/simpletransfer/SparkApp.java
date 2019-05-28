@@ -8,6 +8,9 @@ import com.simpletransfer.rest.RestController;
 
 import java.util.Set;
 
+/**
+ * Main application class, initializes REST controllers and starts application.
+ */
 public class SparkApp {
     private Set<RestController> controllers;
 

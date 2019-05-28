@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.simpletransfer.dto.AccountDto;
 import com.simpletransfer.dto.TransactionDto;
 import com.simpletransfer.exceptions.AccountNotFoundException;
+import com.simpletransfer.exceptions.InsufficiantBalanceException;
 import com.simpletransfer.repository.Account;
 import com.simpletransfer.repository.AccountRepository;
 
@@ -57,8 +58,23 @@ public class AccountService {
         return accountRepository.getAccountById(accountId);
     }
 
-    public String transfer(TransactionDto transactionDto) {
-        LOGGER.debug("transfer: " + transactionDto);
-        return UUID.randomUUID().toString();
+    public void transfer(TransactionDto transactionDto) throws AccountNotFoundException, InsufficiantBalanceException {
+        if (transactionDto.getAmount() <= 0) {
+            throw new IllegalArgumentException("Transfer amount must me positive");
+        }
+        synchronized (this) {
+            Account accountFrom = accountRepository.getAccountById(transactionDto.getFromAccountId());
+            Account accountTo = accountRepository.getAccountById(transactionDto.getToAccountId());
+
+            if (accountFrom.getBalance() >= transactionDto.getAmount()) {
+                accountFrom.setBalance(accountFrom.getBalance() - transactionDto.getAmount());
+                accountTo.setBalance(accountTo.getBalance() + transactionDto.getAmount());
+
+                accountRepository.updateAccount(accountFrom);
+                accountRepository.updateAccount(accountTo);
+            } else {
+                throw new InsufficiantBalanceException("Account balance less then transfer amount");
+            }
+        }
     }
 }

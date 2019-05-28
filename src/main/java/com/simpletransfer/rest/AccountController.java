@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-
+/**
+ * Provides REST Api for account entity.
+ */
 public class AccountController implements RestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 
@@ -53,10 +55,17 @@ public class AccountController implements RestController {
         });
 
         exception(IllegalArgumentException.class, (exception, request, response) -> {
-            LOGGER.error("Unexpected parameter value in create account request", exception);
+            LOGGER.error("Invalid parameter value in create account request", exception);
             ErrorResponseDto errorResponse = new ErrorResponseDto(412, exception.getMessage());
             response.body(gson.toJson(errorResponse));
             response.status(412);
+        });
+
+        exception(Exception.class, (exception, request, response) -> {
+            LOGGER.error("Unexpected error", exception);
+            ErrorResponseDto errorResponse = new ErrorResponseDto(400, exception.getMessage());
+            response.body(gson.toJson(errorResponse));
+            response.status(400);
         });
     }
 }
