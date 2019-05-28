@@ -1,5 +1,6 @@
 package com.simpletransfer.service;
 
+import com.google.common.base.Preconditions;
 import com.simpletransfer.dto.AccountDto;
 import com.simpletransfer.dto.TransactionDto;
 import com.simpletransfer.exceptions.AccountNotFoundException;
@@ -29,9 +30,12 @@ public class AccountService {
     }
 
     public Account createAccount(AccountDto accountDto) throws AccountNotFoundException {
+        Preconditions.checkArgument(accountDto.getOwnerName() != null, "Name is required to create account");
         Account account = new Account();
         account.setOwnerName(accountDto.getOwnerName());
-        account.setBalance(accountDto.getBalance());
+        if (accountDto.getBalance() != null) {
+            account.setBalance(accountDto.getBalance());
+        }
         String accountId = accountRepository.createAccount(account);
         LOGGER.debug("created account: " + account);
 
@@ -39,7 +43,13 @@ public class AccountService {
     }
 
     public Account updateAccount(String accountId, AccountDto accountDto) throws AccountNotFoundException {
-        Account account = new Account(accountId, accountDto.getOwnerName(), accountDto.getBalance());
+        Account account = accountRepository.getAccountById(accountId);
+        if (accountDto.getOwnerName() != null) {
+            account.setOwnerName(accountDto.getOwnerName());
+        }
+        if (accountDto.getBalance() != null) {
+            account.setBalance(accountDto.getBalance());
+        }
         synchronized (this) {
             accountRepository.updateAccount(account);
         }

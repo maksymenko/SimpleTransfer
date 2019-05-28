@@ -43,12 +43,20 @@ public class AccountController implements RestController {
             return accountService.updateAccount(req.params("id"), gson.fromJson(req.body(), AccountDto.class));
         }, gson::toJson);
 
-        // Handle error when requested account does not exist.
+        // Handle error errors in application.
+
         exception(AccountNotFoundException.class, (exception, request, response) -> {
             LOGGER.error("Account not found", exception);
             ErrorResponseDto errorResponse = new ErrorResponseDto(404, exception.getMessage());
             response.body(gson.toJson(errorResponse));
             response.status(404);
+        });
+
+        exception(IllegalArgumentException.class, (exception, request, response) -> {
+            LOGGER.error("Unexpected parameter value in create account request", exception);
+            ErrorResponseDto errorResponse = new ErrorResponseDto(412, exception.getMessage());
+            response.body(gson.toJson(errorResponse));
+            response.status(412);
         });
     }
 }

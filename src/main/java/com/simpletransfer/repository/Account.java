@@ -1,5 +1,7 @@
 package com.simpletransfer.repository;
 
+import java.util.Objects;
+
 public class Account {
     private String id;
     private String ownerName;
@@ -45,5 +47,18 @@ public class Account {
                 ", ownerName='" + ownerName + '\'' +
                 ", balance=" + balance +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return balance == account.balance && id.equals(account.id) && ownerName.equals(account.ownerName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, ownerName, balance);
     }
 }

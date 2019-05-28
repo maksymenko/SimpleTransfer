@@ -7,5 +7,5 @@ public interface AccountRepository {
 
     String createAccount(Account account);
 
-    void updateAccount(Account account);
+    void updateAccount(Account account) throws AccountNotFoundException;
 }

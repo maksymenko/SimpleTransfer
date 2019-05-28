@@ -12,7 +12,7 @@ public class InMemoryAccountRepository implements AccountRepository {
     @Override
     public Account getAccountById(String id) throws AccountNotFoundException {
         if (!storage.containsKey(id)) {
-            throw new AccountNotFoundException("Account not found");
+            throw new AccountNotFoundException("Account " + id + " not found");
         }
         return storage.get(id);
     }
@@ -26,9 +26,9 @@ public class InMemoryAccountRepository implements AccountRepository {
     }
 
     @Override
-    public void updateAccount(Account account) {
+    public void updateAccount(Account account) throws AccountNotFoundException {
         if (!storage.containsKey(account.getId())) {
-            throw new IllegalArgumentException("Account not found");
+            throw new AccountNotFoundException("Account not found");
         }
         storage.put(account.getId(), account);
     }

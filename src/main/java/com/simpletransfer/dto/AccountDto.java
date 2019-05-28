@@ -3,12 +3,12 @@ package com.simpletransfer.dto;
 public class AccountDto {
     private String id;
     private String ownerName;
-    private long balance;
+    private Long balance;
 
     public AccountDto() {
     }
 
-    public AccountDto(String id, String ownerName, long balance) {
+    public AccountDto(String id, String ownerName, Long balance) {
         this.id = id;
         this.ownerName = ownerName;
         this.balance = balance;
@@ -30,11 +30,11 @@ public class AccountDto {
         this.ownerName = ownerName;
     }
 
-    public long getBalance() {
+    public Long getBalance() {
         return balance;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(Long balance) {
         this.balance = balance;
     }
 

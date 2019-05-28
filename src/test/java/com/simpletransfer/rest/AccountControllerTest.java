@@ -31,13 +31,14 @@ public class AccountControllerTest {
     @AfterClass
     public static void tearDownClass() {
         Spark.stop();
+        Spark.awaitStop();
     }
 
     @Test
     public void shouldReturn404IfAccountNotFound() throws IOException, InterruptedException {
         HttpResponse<String> getAccountResponse = RestTestUtils.get(ACCOUNT_PATH + "123");
         assertThat(getAccountResponse.statusCode()).isEqualTo(404);
-        assertThat(getAccountResponse.body()).contains("Account not found");
+        assertThat(getAccountResponse.body()).contains("not found");
     }
 
     @Test
@@ -70,7 +71,7 @@ public class AccountControllerTest {
         AccountDto createdAccount = gson.fromJson(createAccountResponse.body(), AccountDto.class);
 
         createdAccount.setOwnerName("Another User");
-        createdAccount.setBalance(1000);
+        createdAccount.setBalance(1000L);
         HttpResponse<String> updateAccountResponse = RestTestUtils.put(ACCOUNT_PATH + createdAccount.getId(),
                 gson.toJson(createdAccount));
 
